@@ -1,6 +1,6 @@
 # reaction-wishlist
 
-(Reaction)[https://github.com/reactioncommerce/reaction] plugin to add Wishlist support for users.
+[Reaction](https://github.com/reactioncommerce/reaction) plugin to add Wishlist support for users.
 - It helps user add products to Wishlist 
 
 APIs
