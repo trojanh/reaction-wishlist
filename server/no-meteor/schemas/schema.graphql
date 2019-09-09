@@ -1,0 +1,89 @@
+extend type Query {
+  "Return Wishlist for logged in user"
+  wishlist(_id: ID): Wishlist
+
+  "Returns if a product is in Wishlist or not"
+  isProductInWishlist(productId: ID!, variantId: ID): Boolean
+}
+
+extend type Mutation {
+  "Add product with/without variant to Wishlist"
+  addProductToWishlist(input: AddProductWishlistInput!): addProductToWishlistPayload!
+
+  "Remove product with/without variant from Wishlist"
+  removeProductFromWishlist(input: removeProductFromWishlistInput!): removeProductFromWishlistPayload!
+
+  "Send wishlist share email"
+  sendWishlistMail(input: ShareWishlistInput!): ShareWishlistPayload!
+}
+
+input AddProductWishlistInput {
+  "The product's ID"
+  productId: ID!
+
+  "The product's variant ID"
+  variantId: ID
+
+}
+
+input removeProductFromWishlistInput {
+  "The productId to remove from wishlist"
+  productId: ID!
+
+  "The product's variant ID to remove from wishlist"
+  variantId: ID
+
+}
+
+type addProductToWishlistPayload {
+  "productId added to Wishlist, null if already added"
+  productId: ID
+
+  "The product's variant ID to remove from wishlist"
+  variantId: ID
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+type removeProductFromWishlistPayload {
+  "productId removed from Wishlist, null if already removed"
+  productId: ID
+
+  "The product's variant ID to remove from wishlist"
+  variantId: ID
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+type WishlistItem {
+  productId: ID
+  variantId: ID
+}
+
+type Wishlist implements Node {
+  _id: ID!
+  userId: ID!
+  userName: String
+  items: [WishlistItem]
+}
+
+input ShareWishlistInput {
+  "Account ID"
+  accountId: ID!
+
+  "Recipient's email address"
+  recipientMail: String!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+}
+
+type ShareWishlistPayload {
+  "Account ID of wishlist that was shared"
+  accountId: ID!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+}
